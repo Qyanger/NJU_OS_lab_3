@@ -5,6 +5,8 @@
  * 库函数写在这
  */
 // static inline int32_t syscall(int num, uint32_t a1,uint32_t a2,
+//用户请求内核
+//num是系统调用号 a1-a5参数
 int32_t syscall(int num, uint32_t a1, uint32_t a2,
 				uint32_t a3, uint32_t a4, uint32_t a5)
 {
@@ -256,17 +258,20 @@ int str2Str(char *string, char *buffer, int size, int count)
 pid_t fork()
 {
 	// TODO:call syscall
-	return 0;
+	return syscall(SYS_FORK,0,0,0,0,0);
+	
 }
 
 int sleep(uint32_t time)
 {
 	// TODO:call syscall
-	return 0;
+	return syscall(SYS_SLEEP,(uint32_t)time,0,0,0,0);
+	
 }
 
 int exit()
 {
 	// TODO:call syscall
-	return 0;
+	return syscall(SYS_EXIT,0,0,0,0,0);
+	
 }

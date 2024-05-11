@@ -9,7 +9,7 @@
 #
 #clean:
 #	rm -rf *.o *.elf *.bin
-
+#
 # take care of link order of object files
 # -Ttext set the address of the first byte of the text segment
 # -e set the entry address in elf-header
@@ -17,10 +17,10 @@
 
 CC = gcc
 LD = ld
-
+#-fno-asynchronous-unwind-tables 
 CFLAGS = -m32 -march=i386 -static \
 	 -fno-builtin -fno-stack-protector -fno-omit-frame-pointer \
-	 -Wall -Werror -O2
+	 -Wall -Werror -O2 -g
 ASFLAGS = -m32
 LDFLAGS = -m elf_i386
 
@@ -30,7 +30,8 @@ BOBJS = $(BSFILES:.S=.o) $(BCFILES:.c=.o)
 
 bootloader.bin: $(BOBJS)
 	$(LD) $(LDFLAGS) -e start -Ttext 0x7c00 -o bootloader.elf $(BOBJS)
-	objcopy -O binary bootloader.elf bootloader.bin
+	objcopy -S -j .text -O binary bootloader.elf bootloader.bin
+	chmod +x ../utils/genBoot.pl
 	@../utils/genBoot.pl bootloader.bin
 
 clean:
